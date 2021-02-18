@@ -1,0 +1,573 @@
+{% extends "base.html" %}
+{% block title %}Predict Severity{% endblock %}
+{% block content %}
+
+	<h1><u>Predict Accident Severity:</u></h1>
+  </br>
+  </br>
+  <h2><center><b>{{ prediction_text }}</centre></b></h2>
+
+     <!-- Main Input For Receiving Query to our ML -->
+  <div class="container">
+    <form action="{{ url_for('predict')}}"method="post">
+
+      <div class="row">
+        <div class="col-25">
+          <label for="TMC">Traffic Message Code:</label>  
+        </div>
+        <div class="col-75">
+          <input type="text" name="TMC" placeholder="TMC" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Start_Longitude">Start Longitude:</label>
+        </div>
+        <div class="col-75">
+          <input type="text" name="Start_Lng" placeholder="Start_Longitude" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Start_Latitude">Start Latitude:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Start_Lat" placeholder="Start_Latitude" required="required"/>
+        </div>
+      </div>
+      </br>
+
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Distance">Distance:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Distance" placeholder="Distance" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Side">Choose Side:</label>
+         </div>
+        <div class="col-75">
+          <select id="Side" name="Side">
+            <option value="R">Right</option>
+            <option value="L">Left</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="City" name="City">City:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="City" placeholder="City" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="County" name="County">County:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="County" placeholder="County" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="State" name="State">State:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="State" placeholder="State" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Timezone" name="Timezone">Choose Timezone:</label>
+         </div>
+        <div class="col-75">
+          <select id="Timezone" name="Timezone">
+            <option value="US/Eastern">US/Eastern</option>
+            <option value="US/Pacific">US/Pacific</option>
+            <option value="US/Central">US/Central</option>
+            <option value="US/Mountain">US/Mountain</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Temperature" name="Temperature">Temperature:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Temperature" placeholder="Temperature (F)" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Humidity" name="Humidity">Humidity %:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Humidity" placeholder="Humidity %" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Pressure" name="Pressure">Pressure (in):</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Pressure" placeholder="Pressure (in)" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Visibility" name="Visibility">Visibility (mi):</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Visibility" placeholder="Visibility (mi)" required="required"/>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Wind_Direction">Wind_Direction:</label>
+         </div>
+        <div class="col-75">
+          <select id="Wind_Direction" name="Wind_Direction">
+            <option value="Calm">Calm</option>
+            <option value="SW">SW</option>
+            <option value="SSW">SSW</option>
+            <option value="WSW">WSW</option>
+            <option value="WNW">WNW</option>
+            <option value="NW">NW</option>
+            <option value="West">West</option>
+            <option value="NNW">NNW</option>
+            <option value="NNE">NNE</option>
+            <option value="South">South</option>
+            <option value="North">North</option>
+            <option value="Variable">Variable</option>
+            <option value="SE">SE</option>
+            <option value="SSE">SSE</option>
+            <option value="ESE">ESE</option>
+            <option value="East">East</option>
+            <option value="NE">NE</option>
+            <option value="ENE">ENE</option>
+            <option value="E">E</option>
+            <option value="W">W</option>
+            <option value="S">S</option>
+            <option value="VAR">VAR</option>
+            <option value="CALM">CALM</option>
+            <option value="N">N</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Weather_Condition">Weather Condition:</label>
+         </div>
+        <div class="col-75">
+          <select id="Weather_Condition" name="Weather_Condition">
+            <option value="Light Rain">Light Rain</option>
+            <option value="Overcast">Overcast</option>
+            <option value="Mostly Cloudy">Mostly Cloudy</option>
+            <option value="Rain">Rain</option>
+            <option value="Light Snow">Light Snow</option>
+            <option value="Haze">Haze</option>
+            <option value="Scattered Clouds">Scattered Clouds</option>
+            <option value="Partly Cloudy">Partly Cloudy</option>
+            <option value="Clear">Clear</option>
+            <option value="Snow">Snow</option>
+            <option value="Light Freezing Drizzle">Light Freezing Drizzle</option>
+            <option value="Light Drizzle">Light Drizzle</option>
+            <option value="Fog">Fog</option>
+            <option value="Shallow Fog">Shallow Fog</option>
+            <option value="Heavy Rain">Heavy Rain</option>
+            <option value="Light Freezing Rain">Light Freezing Rain</option>
+            <option value="Cloudy">Cloudy</option>
+            <option value="Drizzle">Drizzle</option>
+            <option value="Light Rain Showers">Light Rain Showers</option>
+            <option value="Mist">Mist</option>
+            <option value="Smoke">Smoke</option>
+            <option value="Patches of Fog">Patches of Fog</option>
+            <option value="Light Freezing Fog">Light Freezing Fog</option>
+            <option value="Light Haze">Light Haze</option>
+            <option value="Light Thunderstorms and Rain">Light Thunderstorms and Rain</option>
+            <option value="Thunderstorms and Rain">Thunderstorms and Rain</option>
+            <option value="Fair">Fair</option>
+            <option value="Volcanic Ash">Volcanic Ash</option>
+            <option value="Blowing Sand">Blowing Sand</option>
+            <option value="Blowing Dust / Windy">Blowing Dust / Windy</option>
+            <option value="Widespread Dust">Widespread Dust</option>
+            <option value="Fair / Windy">Fair / Windy</option>
+            <option value="Rain Showers">Rain Showers</option>
+            <option value="Light Rain / Windy">Light Rain / Windy</option>
+            <option value="Hail">Hail</option>
+            <option value="Heavy Drizzle">Heavy Drizzle</option>
+            <option value="Showers in the Vicinity">Showers in the Vicinity</option>
+            <option value="Light Rain Shower">Light Rain Shower</option>
+            <option value="Light Rain with Thunder">Light Rain with Thunder</option>
+            <option value="Mostly Cloudy / Windy">Mostly Cloudy / Windy</option>
+            <option value="Partly Cloudy / Windy">Partly Cloudy / Windy</option>
+            <option value="Thunder in the Vicinity">Thunder in the Vicinity</option>
+            <option value="T-Storm">T-Storm</option>
+            <option value="Heavy Thunderstorms and Rain">Heavy Thunderstorms and Rain</option>
+            <option value="Thunderstorm">Thunderstorm</option>
+            <option value="Thunder">Thunder</option>
+            <option value="Heavy T-Storm">Heavy T-Storm</option>
+            <option value="Funnel Cloud">Funnel Cloud</option>
+            <option value="Heavy T-Storm / Windy">Heavy T-Storm / Windy</option>
+            <option value="Blowing Snow">Blowing Snow</option>
+            <option value="Light Thunderstorms and Snow">Light Thunderstorms and Snow</option>
+            <option value="Heavy Snow">Heavy Snow</option>
+            <option value="Low Drifting Snow">Low Drifting Snow</option>
+            <option value="Light Ice Pellets">Light Ice Pellets</option>
+            <option value="Ice Pellets">Ice Pellets</option>
+            <option value="Squalls">Squalls</option>
+            <option value="N/A Precipitation">N/A Precipitation</option>
+            <option value="Cloudy / Windy">Cloudy / Windy</option>
+            <option value="Light Fog">Light Fog</option>
+            <option value="Snow Grains">Snow Grains</option>
+            <option value="Snow Showers">Snow Showers</option>
+            <option value="Heavy Thunderstorms and Snow">Heavy Thunderstorms and Snow</option>
+            <option value="Rain / Windy">Rain / Windy</option>
+            <option value="Heavy Rain / Windy">Heavy Rain / Windy</option>
+            <option value="Heavy Ice Pellets">Heavy Ice Pellets</option>
+            <option value="Light Snow / Windy">Light Snow / Windy</option>
+            <option value="Heavy Freezing Rain">Heavy Freezing Rain</option>
+            <option value="Small Hail">Small Hail</option>
+            <option value="Heavy Rain Showers">Heavy Rain Showers</option>
+            <option value="Wintry Mix">Wintry Mix</option>
+            <option value="Freezing Rain">Freezing Rain</option>
+            <option value="Snow / Windy">Snow / Windy</option>
+            <option value="Snow and Sleet">Snow and Sleet</option>
+            <option value="Sleet">Sleet</option>
+            <option value="Light Drizzle / Windy">Light Drizzle / Windy</option>
+            <option value="Light Freezing Rain / Windy">Light Freezing Rain / Windy</option>
+            <option value="Light Sleet">Light Sleet</option>
+            <option value="Heavy Sleet">Heavy Sleet</option>
+            <option value="Wintry Mix / Windy">Wintry Mix / Windy</option>
+            <option value="Light Snow Shower">Light Snow Shower</option>
+            <option value="Drizzle and Fog">Drizzle and Fog</option>
+            <option value="T-Storm / Windy">T-Storm / Windy</option>
+            <option value="Heavy Snow / Windy">Heavy Snow / Windy</option>
+            <option value="Fog / Windy">Fog / Windy</option>
+            <option value="Light Snow and Sleet">Light Snow and Sleet</option>
+            <option value="Light Snow Grains">Light Snow Grains</option>
+            <option value="Thunder / Windy">Thunder / Windy</option>
+            <option value="Haze / Windy">Haze / Windy</option>
+            <option value="Sand / Dust Whirlwinds">Sand / Dust Whirlwinds</option>
+            <option value="Blowing Dust">Blowing Dust</option>
+            <option value="Light Rain Shower / Windy">Light Rain Shower / Windy</option>
+            <option value="Squalls / Windy">Squalls / Windy</option>
+            <option value="Drizzle / Windy">Drizzle / Windy</option>
+            <option value="Partial Fog / Windy">Partial Fog / Windy</option>
+            <option value="Light Snow with Thunder">Light Snow with Thunder</option>
+            <option value="Blowing Snow / Windy">Blowing Snow / Windy</option>
+            <option value="Partial Fog">Partial Fog</option>
+            <option value="Rain Shower">Rain Shower</option>
+            <option value="Widespread Dust / Windy">Widespread Dust / Windy</option>
+            <option value="Sand / Dust Whirlwinds / Windy">Sand / Dust Whirlwinds / Windy</option>
+            <option value="Snow and Thunder">Snow and Thunder</option>
+            <option value="Light Snow and Sleet / Windy">Light Snow and Sleet / Windy</option>
+            <option value="Snow and Sleet / Windy">Snow and Sleet / Windy</option>
+            <option value="Heavy Snow with Thunder">Heavy Snow with Thunder</option>
+            <option value="Thunder / Wintry Mix / Windy">Thunder / Wintry Mix / Windy</option>
+            <option value="Light Snow Showers">Light Snow Showers</option>
+            <option value="Heavy Blowing Snow">Heavy Blowing Snow</option>
+            <option value="Light Hail">Light Hail</option>
+            <option value="Heavy Smoke">Heavy Smoke</option>
+            <option value="Heavy Thunderstorms with Small Hail">Heavy Thunderstorms with Small Hail</option>
+            <option value="Light Thunderstorm">Light Thunderstorm</option>
+            <option value="Heavy Freezing Drizzle">Heavy Freezing Drizzle</option>
+            <option value="Light Blowing Snow">Light Blowing Snow</option>
+            <option value="Thunderstorms and Snow">Thunderstorms and Snow</option>
+            <option value="Smoke / Windy">Smoke / Windy</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Time_Duration" name="Time_Duration">Time Duration:</label>
+         </div>
+        <div class="col-75">
+          <input type="text" name="Time_Duration" placeholder="Time_Duration in minutes" required="required"/>
+        </div>
+      </div>
+      </br>
+
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Sunrise_Sunset">Day or Night?</label>
+         </div>
+        <div class="col-75">
+          <select id="Sunrise_Sunset" name="Sunrise_Sunset">
+            <option value="Night">Night</option>
+            <option value="Day">Day</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Hour">Hour in 24 hrs</label>
+         </div>
+        <div class="col-75">
+          <select id="Hour" name="Hour">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Weekday">WeekDay</label>
+         </div>
+        <div class="col-75">
+          <select id="Weekday" name="Weekday">
+            <option value="Mon">Mon</option>
+            <option value="Tue">Tue</option>
+            <option value="Wed">Wed</option>
+            <option value="Thu">Thu</option>
+            <option value="Fri">Fri</option>
+            <option value="Sat">Sat</option>
+            <option value="Sun">Sun</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+      </br>
+      <p><b><u>Optional Parameters:</u></b></p>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Amenity">Amenity</label>
+         </div>
+        <div class="col-75">
+          <select id="Amenity" name="Amenity">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Bump">Bump</label>
+         </div>
+        <div class="col-75">
+          <select id="Bump" name="Bump">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Crossing">Crossing</label>
+         </div>
+        <div class="col-75">
+          <select id="Crossing" name="Crossing">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Give_Way">Give_Way</label>
+         </div>
+        <div class="col-75">
+          <select id="Give_Way" name="Give_Way">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Junction">Juntion</label>
+         </div>
+        <div class="col-75">
+          <select id="Junction" name="Junction">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="No_Exit">No_Exit</label>
+         </div>
+        <div class="col-75">
+          <select id="No_Exit" name="No_Exit">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Railway">Railway</label>
+         </div>
+        <div class="col-75">
+          <select id="Railway" name="Railway">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Roundabout">Roundabout</label>
+         </div>
+        <div class="col-75">
+          <select id="Roundabout" name="Roundabout">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Station">Station</label>
+         </div>
+        <div class="col-75">
+          <select id="Station" name="Station">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Stop">Stop</label>
+         </div>
+        <div class="col-75">
+          <select id="Stop" name="Stop">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Traffic_Calming">Traffic_Calming</label>
+         </div>
+        <div class="col-75">
+          <select id="Traffic_Calming" name="Traffic_Calming">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Traffic_Signal">Traffic_Signal</label>
+         </div>
+        <div class="col-75">
+          <select id="Traffic_Signal" name="Traffic_Signal">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-25">
+          <label for="Turning_Loop">Turning_Loop</label>
+         </div>
+        <div class="col-75">
+          <select id="Turning_Loop" name="Turning_Loop">
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      </br>
+      <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+
+    </form>
+  </div>
+
+   <br>
+   <br>
+   {{ prediction_text }}
+
+{% endblock %}
